@@ -396,6 +396,18 @@ else ifeq ($(platform), miyoo)
 	CFLAGS += -fno-common -ftree-vectorize -funswitch-loops
 	LUA_MYCFLAGS += -fomit-frame-pointer -ffast-math -march=armv5te -mtune=arm926ej-s
 	LUA_MYCFLAGS += -fno-common -ftree-vectorize -funswitch-loops
+# XYDDS
+else ifeq ($(platform), xydds)
+	TARGET := $(TARGET_NAME)_libretro.so
+	fpic := -fPIC
+	SHARED := -shared -Wl,-version-script=link.T
+	CC = /opt/xydds/usr/bin/arm-linux-gcc
+	AR = /opt/xydds/usr/bin/arm-linux-ar
+	PLATFORM_DEFINES += -D_GNU_SOURCE
+	CFLAGS += -fomit-frame-pointer -ffast-math -marm -mfpu=neon-vfpv4 -mfloat-abi=hard
+	CFLAGS += -fno-common -ftree-vectorize -funswitch-loops -DARM -mcpu=cortex-a7
+	LUA_MYCFLAGS += -fomit-frame-pointer -ffast-math -marm -mfpu=neon-vfpv4 -mfloat-abi=hard
+	LUA_MYCFLAGS += -fno-common -ftree-vectorize -funswitch-loops -DARM -mcpu=cortex-a7
 else
 	TARGET := $(TARGET_NAME)_libretro.dll
 	SHARED := -shared -static-libgcc -static-libstdc++ -s -Wl,--no-undefined
